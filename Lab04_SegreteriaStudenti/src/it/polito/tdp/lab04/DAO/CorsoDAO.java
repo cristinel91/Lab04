@@ -29,9 +29,9 @@ public class CorsoDAO {
 			ResultSet rs = st.executeQuery();
 
 			while (rs.next()) {
-
 				// Crea un nuovo JAVA Bean Corso
 				// Aggiungi il nuovo Corso alla lista
+				corsi.add(new Corso(rs.getString("codins"),rs.getInt("crediti"),rs.getString("nome"),rs.getInt("pd")));
 			}
 
 			return corsi;
@@ -53,7 +53,7 @@ public class CorsoDAO {
 	 * Ottengo tutti gli studenti iscritti al Corso
 	 */
 	public void getStudentiIscrittiAlCorso(Corso corso) {
-		// TODO
+		List<Studente> studenti = new LinkedList<Studente>();
 	}
 
 	/*
