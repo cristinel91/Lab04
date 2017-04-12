@@ -12,7 +12,6 @@ public class Main extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-		
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("SegreteriaStudenti.fxml"));
 			BorderPane root = (BorderPane)loader.load();

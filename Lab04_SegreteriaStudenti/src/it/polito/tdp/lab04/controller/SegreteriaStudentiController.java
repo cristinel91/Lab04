@@ -151,7 +151,8 @@ public class SegreteriaStudentiController {
         assert btnCheck != null : "fx:id=\"btnCheck\" was not injected: check your FXML file 'SegreteriaStudenti.fxml'.";
     }
 
-	public void setModel(Model model) {
+
+    public void setModel(Model model) {
 		this.model=model;
 		cmbxCorsi.getItems().addAll(model.getCorsi());
 	}
