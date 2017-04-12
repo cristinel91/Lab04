@@ -53,16 +53,31 @@ public class SegreteriaStudentiController {
 
     @FXML
     void doCercaCorsi(ActionEvent event) {
+    	int matricolaInt=Integer.parseInt(txtMatricola.getText());
+    	if(model.getStudente(matricolaInt)==null)
+    		txtResult.setText("ERRORE:Matricola inesistente\n");
+    	txtResult.setText(model.getCorsiIscritto(model.getStudente(matricolaInt)).toString());
 
     }
     
     @FXML
     void doCheck(ActionEvent event) {
-
+    	int matricolaInt=Integer.parseInt(txtMatricola.getText());
+    	if(cmbxCorsi.getValue()!=null){
+    		if(model.verificaIscrizione(model.getStudente(matricolaInt),cmbxCorsi.getValue())) // NON FUNZIONA
+    			txtResult.setText("Studente non iscritto al corso\n");
+    		txtResult.setText("Studente iscritto al corso \n");
+    	}
+    	else{
+    	txtCognome.setText(model.getStudente(matricolaInt).getCognome());
+    	txtNome.setText(model.getStudente(matricolaInt).getNome());
+    	}
     }
 
     @FXML
     void doCercaIscrittiCorso(ActionEvent event) {
+    	if(cmbxCorsi.getValue()==null)
+    		txtResult.setText("ERRORE: Selezionare un corso\n");
     	txtResult.setText(cmbxCorsi.getValue().getStudentiIscritti().toString());
     }
 
@@ -77,6 +92,7 @@ public class SegreteriaStudentiController {
     	txtNome.clear();
     	txtCognome.clear();
     	txtResult.clear();
+    	cmbxCorsi.setValue(null);
     }
 
     @FXML

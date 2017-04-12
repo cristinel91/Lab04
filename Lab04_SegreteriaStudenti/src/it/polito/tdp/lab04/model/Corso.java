@@ -1,5 +1,6 @@
 package it.polito.tdp.lab04.model;
 import java.util.*;
+import it.polito.tdp.lab04.DAO.*;
 
 public class Corso {
 	
@@ -18,14 +19,16 @@ public class Corso {
 	}
 
 	public String toString() {
-		return codins+" "+nome;
+		return codins+" "+nome+"\n";
 	}
 	
 	public String getCodice(){
 		return codins;
 	}
 
-	public String getStudentiIscritti() {
-		return null;
+	public List<Studente> getStudentiIscritti(){
+		CorsoDAO corsoDao=new CorsoDAO();
+		studentiIscritti.addAll(corsoDao.getStudentiIscrittiAlCorso(this));
+		return studentiIscritti;
 	}
 }
