@@ -25,9 +25,7 @@ public class Model {
 	}
 	
 	public List<Corso> getCorsiIscritto(Studente studente){
-		StudenteDAO studenteDao=new StudenteDAO();
-		corsiIscritto.addAll(studenteDao.getCorsiIscritto(studente));
-		return corsiIscritto;
+		return studenteDao.getCorsiIscritto(studente);
 	}
 	
 	public Studente getStudente(int matricola){
@@ -36,9 +34,10 @@ public class Model {
 	}
 	
 	public boolean verificaIscrizione(Studente studente, Corso corso){
-		CorsoDAO ctempDao=new CorsoDAO();
-		if(ctempDao.getStudentiIscrittiAlCorso(corso).contains(studente))
-			return true;
-		return false;
+		return studenteDao.isStudenteIscrittoACorso(studente, corso);
+	}
+	
+	public boolean iscriviStudenteACorso(Studente studente, Corso corso) {
+		return corsoDao.iscriviStudenteACorso(studente, corso);
 	}
 }

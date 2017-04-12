@@ -55,7 +55,7 @@ public class SegreteriaStudentiController {
     void doCercaCorsi(ActionEvent event) {
     	int matricolaInt=Integer.parseInt(txtMatricola.getText());
     	if(model.getStudente(matricolaInt)==null)
-    		txtResult.setText("ERRORE:Matricola inesistente\n");
+    		txtResult.setText("ERRORE: Matricola inesistente\n");
     	txtResult.setText(model.getCorsiIscritto(model.getStudente(matricolaInt)).toString());
 
     }
@@ -63,15 +63,9 @@ public class SegreteriaStudentiController {
     @FXML
     void doCheck(ActionEvent event) {
     	int matricolaInt=Integer.parseInt(txtMatricola.getText());
-    	if(cmbxCorsi.getValue()!=null){
-    		if(model.verificaIscrizione(model.getStudente(matricolaInt),cmbxCorsi.getValue())) // NON FUNZIONA
-    			txtResult.setText("Studente non iscritto al corso\n");
-    		txtResult.setText("Studente iscritto al corso \n");
-    	}
-    	else{
     	txtCognome.setText(model.getStudente(matricolaInt).getCognome());
     	txtNome.setText(model.getStudente(matricolaInt).getNome());
-    	}
+    	
     }
 
     @FXML
@@ -83,6 +77,54 @@ public class SegreteriaStudentiController {
 
     @FXML
     void doIscrivi(ActionEvent event) {
+    	try {
+    		if (txtMatricola.getText()==null) {
+				txtResult.setText("Inserire una matricola.");
+				return;
+			}
+
+			if (cmbxCorsi.getValue() == null) {
+				txtResult.setText("Selezionare un corso.");
+				return;
+			}
+
+			// Prendo la matricola in input
+			int matricola = Integer.parseInt(txtMatricola.getText());
+
+			// (opzionale)
+			// Inserisco il Nome e Cognome dello studente nell'interfaccia
+			Studente studente = model.getStudente(matricola);
+			if (studente == null) {
+				txtResult.setText("Nessun risultato: matricola inesistente");
+				return;
+			}
+
+			txtNome.setText(studente.getNome());
+			txtCognome.setText(studente.getCognome());
+
+			// Ottengo il nome del corso
+			Corso corso = cmbxCorsi.getValue();
+
+			// Controllo se lo studente è già iscritto al corso
+			if (model.verificaIscrizione(studente, corso)) {
+				txtResult.setText("Studente già iscritto a questo corso");
+				return;
+			}
+
+			// Iscrivo lo studente al corso.
+			// Controllo che l'inserimento vada a buon fine
+			if (!model.iscriviStudenteACorso(studente, corso)) {
+				txtResult.setText("Errore durante l'iscrizione al corso");
+				return;
+			} else {
+				txtResult.setText("Studente iscritto al corso!");
+			}
+
+		} catch (NumberFormatException e) {
+			txtResult.setText("Inserire una matricola nel formato corretto.");
+		} catch (RuntimeException e) {
+			txtResult.setText("ERRORE DI CONNESSIONE AL DATABASE!");
+		}
 
     }
 

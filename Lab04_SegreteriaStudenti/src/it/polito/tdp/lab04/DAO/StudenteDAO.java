@@ -13,6 +13,8 @@ import it.polito.tdp.lab04.model.Studente;
 public class StudenteDAO {
 	
 	public Studente getStudente(int matricola) {
+		
+		
 
 		final String sql = "SELECT * "+
 						   "FROM studente "+
@@ -38,7 +40,8 @@ public class StudenteDAO {
 	}
 	
 	public List<Corso> getCorsiIscritto(Studente studente){
-		List<Corso> corsi = new LinkedList<Corso>();
+		
+		List<Corso>corsi = new LinkedList<Corso>();
 		
 		final String sql = "SELECT * "+
 				 		   "FROM corso "+
@@ -54,11 +57,39 @@ public class StudenteDAO {
 			ResultSet rs = st.executeQuery();
 
 			while (rs.next()) {
-				corsi.add(new Corso(rs.getString("codins"),rs.getInt("crediti"),rs.getString("nome"),rs.getInt("pd")));
+				Corso c = new Corso(rs.getString("codins"),rs.getInt("crediti"),rs.getString("nome"),rs.getInt("pd"));
+				if(!corsi.contains(c))
+				   corsi.add(c);
 			}
 			return corsi;
 		} catch (SQLException e) {
 			// e.printStackTrace();
+			throw new RuntimeException("Errore Db");
+		}
+	}
+	
+	public boolean isStudenteIscrittoACorso(Studente studente, Corso corso) {
+
+		final String sql = "SELECT * FROM iscrizione where codins=? and matricola=?";
+
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setString(1, corso.getCodice());
+			st.setInt(2, studente.getMatricola());
+
+			ResultSet rs = st.executeQuery();
+
+			boolean returnValue = false;
+
+			if (rs.next())
+				returnValue = true;
+
+			conn.close();
+			return returnValue;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new RuntimeException("Errore Db");
 		}
 	}
